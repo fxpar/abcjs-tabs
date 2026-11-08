@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tablature explicite abcjs</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 1000px; margin: 0 auto; padding: 16px; background: #fff; color: #222; }
+    h1 { font-size: 1.4rem; }
+    .example { margin-bottom: 2rem; }
+    textarea { width: 100%; box-sizing: border-box; font-family: ui-monospace, Consolas, monospace; font-size: 14px; }
+    .warnings { color: #a15c00; font-size: 0.9rem; white-space: pre-line; min-height: 1em; }
+    /* Les chiffres ajoutés gardent la classe abcjs-tab-number : on peut les styler ici. */
+    .abcjs-custom-tab { fill: #000; }
+  </style>
+</head>
+<body>
+  <h1>Tablature explicite pour abcjs</h1>
+
+  <div class="example">
+    <h2>Ukulélé</h2>
+    <textarea id="abc-uke" rows="11">X:1
+T:Exemple ukulélé
+M:4/4
+L:1/4
+K:C
+%%tab-instrument ukulele
+C D E F | [CEG] D E F | G2 z G | [CEG]4 |]
+t: c0 c2 e0 e1 | g0c0e0 c2 e0 e1 | g0 g0 | g0c0e0a3 |]
+A G F E | D C D E | C4 |]
+t: a0 g0 e1 e0 | c2 c0 c2 e0 | c0 |]</textarea>
+    <div id="paper-uke"></div>
+    <div class="warnings" id="warn-uke"></div>
+  </div>
+
+  <div class="example">
+    <h2>Guitare</h2>
+    <textarea id="abc-guitar" rows="10">X:2
+T:Exemple guitare
+M:4/4
+L:1/4
+K:G
+%%tab-instrument guitar
+[CEGce]2 [G,B,DGBg]2 | E,/F,/G, A, B, | c d- d e |
+t: A3D2g0b1e0 E3A2D0g0b0e3 | E0 E2 E3 A0 A2 | b1 b3 - e0 |
+[DAdf]4 |]
+t: ExAxD0g2b3e2 |]</textarea>
+    <div id="paper-guitar"></div>
+    <div class="warnings" id="warn-guitar"></div>
+  </div>
+
+  <!-- abcjs 6.7.2 : copie locale (vendor/abcjs, non versionnée), sinon CDN -->
+  <script src="vendor/abcjs/abcjs-basic-min.js"></script>
+  <script>
+    window.ABCJS || document.write('<script src="https://cdn.jsdelivr.net/npm/abcjs@6.7.2/dist/abcjs-basic-min.js"><\/script>');
+  </script>
+
+  <script type="module">
+    import { CustomAbcTabPlugin } from './CustomAbcTabPlugin.js';
+
+    // Une instance suffit ; l'instrument vient de %%tab-instrument (sinon de l'option).
+    const plugin = new CustomAbcTabPlugin(window.ABCJS, {
+      instrument: 'guitar',
+      background: '#fff',
+    });
+
+    function setup(id) {
+      const textarea = document.getElementById('abc-' + id);
+      const paper = document.getElementById('paper-' + id);
+      const warn = document.getElementById('warn-' + id);
+      const draw = () => {
+        const { warnings } = plugin.render(paper, textarea.value, {
+          responsive: 'resize',
+          paddingbottom: 10,
+        });
+        warn.textContent = warnings.join('\n');
+      };
+      textarea.addEventListener('input', draw);
+      draw();
+    }
+
+    setup('uke');
+    setup('guitar');
+  </script>
+</body>
+</html>

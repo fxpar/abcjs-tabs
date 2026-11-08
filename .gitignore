@@ -1,0 +1,14 @@
+# Third-party library: download it yourself (see README), never commit it
+vendor/abcjs/*
+!vendor/abcjs/.gitkeep
+
+# Local Claude Code settings
+.claude/settings.local.json
+
+# OS / editor files
+Thumbs.db
+Desktop.ini
+.DS_Store
+.vscode/
+.idea/
+node_modules/
