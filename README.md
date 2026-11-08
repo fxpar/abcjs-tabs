@@ -18,6 +18,8 @@ C D E F | [CEG] D E F |
 t: c0 c2 e0 e1 | g0c0e0 c2 e0 e1 |
 ```
 
+![Ukulele demo: ABC source with t: lines, and the rendered score with its TAB staff](docs/images/demo-ukulele.png)
+
 ## Installation
 
 1. Download `abcjs-basic-min.js` version 6.7.2 (for example from
@@ -88,6 +90,10 @@ Set the instrument in the tune header:
 %%tab-instrument guitar
 ```
 
+The guitar demo shows full chords, muted strings (`x`) and a tied note skipped with `-`:
+
+![Guitar demo: chords, muted strings and a tied note in the TAB staff](docs/images/demo-guitar.png)
+
 ## How it works
 
 1. **Prepare**: `t:` lines and `%%tab-instrument` are read, then replaced by a comment of the same length so abcjs character positions (`startChar`/`endChar`) stay correct.
@@ -115,5 +121,6 @@ Set the instrument in the tune header:
 ```
 CustomAbcTabPlugin.js   the plugin (ES module)
 index.html              live, editable ukulele and guitar demo
+docs/images/            screenshots used in this README
 vendor/abcjs/           put abcjs-basic-min.js here (git-ignored)
 ```
